@@ -89,32 +89,47 @@ window.KOS = {
   ],
 
 
-  // Tempat terdekat — jarak & waktu dari Google Maps / OpenStreetMap (dicek 20 Nov 2026).
-  // mode: 'walk' = jalan kaki, 'ride' = naik motor/mobil (lalu lintas lancar)
+  // Tempat terdekat — nama, rating, jarak & waktu dari Google Maps (dicek 20 Nov 2026).
+  // ll = koordinat tujuan (link rute Google Maps dari kos) · m: 'walk' jalan kaki / 'ride' naik motor (lalu lintas lancar)
+  kosLL: '-6.2649226,106.845937',
   nearby: [
     { ic: '🚶', id: 'Jalan kaki', en: 'Walking distance', items: [
-      { e: '🕌', n: "Masjid Jami' Pejaten", s: { id: 'Masjid terdekat', en: 'Nearest mosque' }, d: '200 m', t: 3, m: 'walk' },
-      { e: '☕', n: 'Latar Kopi 3.0', s: { id: 'Tempat nongkrong · ★ 4,6', en: 'Hangout café · ★ 4.6' }, d: '600 m', t: 8, m: 'walk' },
-      { e: '🏪', n: 'Indomaret Kalibata Timur', s: { id: 'Minimarket', en: 'Convenience store' }, d: '700 m', t: 9, m: 'walk' },
-      { e: '⛪', n: 'GPIB Ekklesia', s: { id: 'Gereja terdekat · ★ 4,8', en: 'Nearest church · ★ 4.8' }, d: '850 m', t: 12, m: 'walk' }
+      { e: '🕌', n: "Masjid Jami' Pejaten", s: { id: 'Masjid terdekat · ★ 4,7', en: 'Nearest mosque · ★ 4.7' }, d: '200 m', t: 3, m: 'walk', ll: '-6.2642298,106.8470085', q: "Masjid Jami' Pejaten, Pejaten Timur, Jakarta Selatan", sv: '-6.2643784,106.8470695,338' },
+      { e: '🏪', n: 'Indomaret Kalibata Timur', s: { id: 'Minimarket', en: 'Convenience store' }, d: '700 m', t: 9, m: 'walk', ll: '-6.2622097,106.8490855', q: 'Indomaret Kalibata Timur, Pancoran, Jakarta Selatan', sv: '-6.2623047,106.8490827,10' },
+      { e: '⛪', n: 'Gereja GPIB Ekklesia', s: { id: 'Gereja terdekat · ★ 4,8', en: 'Nearest church · ★ 4.8' }, d: '850 m', t: 12, m: 'walk', ll: '-6.259356,106.847504', q: 'GPIB Ekklesia, Kalibata, Jakarta Selatan' }
     ] },
-    { ic: '🛵', id: 'Belanja, kesehatan & kampus', en: 'Shopping, health & campus', items: [
-      { e: '🏥', n: 'Brawijaya Hospital Duren Tiga', s: { id: 'Rumah sakit · ★ 4,8', en: 'Hospital · ★ 4.8' }, d: '1,8 km', t: 5, m: 'ride' },
-      { e: '🛍️', n: 'Kalibata City Square', s: { id: 'Mall & supermarket (Farmers Market)', en: 'Mall & supermarket (Farmers Market)' }, d: '3 km', t: 10, m: 'ride' },
-      { e: '🎓', n: 'Universitas Trilogi', s: { id: 'Kampus', en: 'University' }, d: '2,5 km', t: 8, m: 'ride' },
-      { e: '🎓', n: 'Universitas Nasional (UNAS)', s: { id: 'Kampus', en: 'University' }, d: '4,3 km', t: 12, m: 'ride' }
+    { ic: '☕', id: 'Nongkrong & belanja', en: 'Hangouts & shopping', items: [
+      { e: '☕', n: 'Kopi Kenangan Pasar Minggu', s: { id: 'Kedai kopi · ★ 4,4', en: 'Coffee shop · ★ 4.4' }, d: '1,1 km', t: 16, m: 'walk', ll: '-6.2731549,106.8463326' },
+      { e: '☕', n: 'Starbucks Kalibata City', s: { id: 'Kedai kopi · ★ 4,5', en: 'Coffee shop · ★ 4.5' }, d: '3,2 km', t: 8, m: 'ride', ll: '-6.25653,106.8522056', q: 'Starbucks Kalibata City Square, Jakarta' },
+      { e: '🛍️', n: 'Kalibata City Square', s: { id: 'Mall & supermarket · ★ 4,5', en: 'Mall & supermarket · ★ 4.5' }, d: '3 km', t: 8, m: 'ride', ll: '-6.256341,106.852218', q: 'Kalibata City Square, Jakarta' },
+      { e: '🛍️', n: 'The Park Pejaten', s: { id: 'Mall (eks Pejaten Village) · ★ 4,5', en: 'Mall (formerly Pejaten Village) · ★ 4.5' }, d: '4,4 km', t: 10, m: 'ride', ll: '-6.2803337,106.8293019', q: 'The Park Pejaten, Jakarta' }
+    ] },
+    { ic: '🏥', id: 'Kesehatan & kampus', en: 'Health & campus', items: [
+      { e: '🏥', n: 'Brawijaya Hospital Duren Tiga', s: { id: 'Rumah sakit · ★ 4,8', en: 'Hospital · ★ 4.8' }, d: '1,8 km', t: 5, m: 'ride', ll: '-6.253289,106.841193', q: 'Brawijaya Hospital Duren Tiga, Jakarta', sv: '-6.2535629,106.8411473,355' },
+      { e: '🏥', n: 'Siloam Hospitals ASRI', s: { id: 'Rumah sakit · ★ 4,4', en: 'Hospital · ★ 4.4' }, d: '2,8 km', t: 7, m: 'ride', ll: '-6.254562,106.832412', q: 'Siloam Hospitals ASRI, Jakarta' },
+      { e: '🎓', n: 'Universitas Nasional (UNAS)', s: { id: 'Kampus · ★ 4,6', en: 'University · ★ 4.6' }, d: '5,2 km', t: 10, m: 'ride', ll: '-6.281287,106.839328', q: 'Universitas Nasional, Pejaten, Jakarta' },
+      { e: '🎓', n: 'Universitas Mercu Buana', s: { id: 'Kampus Warung Buncit', en: 'Warung Buncit campus' }, d: '5 km', t: 12, m: 'ride', ll: '-6.2773703,106.8297603', q: 'Universitas Mercu Buana Warung Buncit, Jakarta' }
     ] },
     { ic: '🚆', id: 'Transportasi umum', en: 'Public transport', items: [
-      { e: '🚆', n: 'KRL Pasar Minggu Baru', s: { id: 'Stasiun Commuter Line', en: 'Commuter Line station' }, d: '850 m', t: 12, m: 'walk' },
-      { e: '🚌', n: 'TransJakarta Komp. Kalibata', s: { id: 'Halte bus', en: 'Bus stop' }, d: '± 2 km', t: 6, m: 'ride' },
-      { e: '🚈', n: 'LRT Jabodebek Pancoran', s: { id: 'Stasiun LRT', en: 'LRT station' }, d: '3,3 km', t: 10, m: 'ride' },
-      { e: '🚇', n: 'MRT Blok M', s: { id: 'Stasiun MRT', en: 'MRT station' }, d: '8,4 km', t: 25, m: 'ride' }
+      { e: '🚆', n: 'KRL Pasar Minggu Baru', s: { id: 'Commuter Line Bogor', en: 'Commuter Line (Bogor line)' }, d: '850 m', t: 12, m: 'walk', ll: '-6.262798,106.851796', q: 'Stasiun Pasar Minggu Baru, Jakarta' },
+      { e: '🚌', n: 'TransJakarta Halte Pejaten', s: { id: 'Koridor 6 · arah Kuningan', en: 'Corridor 6 · towards Kuningan' }, d: '4,8 km', t: 12, m: 'ride', ll: '-6.278396,106.8297469', q: 'Halte Transjakarta Pejaten, Jakarta Selatan' },
+      { e: '🚈', n: 'LRT Pancoran Bank BJB', s: { id: 'LRT Jabodebek', en: 'Jabodebek LRT' }, d: '3,3 km', t: 7, m: 'ride', ll: '-6.2421012,106.8383597', q: 'Stasiun LRT Pancoran Bank BJB, Jakarta' },
+      { e: '🚇', n: 'MRT Blok M BCA', s: { id: 'MRT Jakarta', en: 'Jakarta MRT' }, d: '8,4 km', t: 16, m: 'ride', ll: '-6.2447585,106.7981004', q: 'Stasiun MRT Blok M BCA, Jakarta' }
     ] }
   ],
+  // sv = 'lat,lng,arah' Street View yang SUDAH dicek tampak depannya (tanpa sv → tampil peta saja)
+  // offices: [kawasan, jarak, tujuan (gedung contoh, nama yang resolve di Google Maps), label contoh]
   offices: [
-    ['Kuningan', '6,6 km'], ['MT Haryono', '7 km'], ['Gatot Subroto', '7,2 km'], ['Setiabudi', '7,4 km'],
-    ['SCBD', '8,2 km'], ['Sudirman', '9,4 km'], ['Bundaran HI', '10,9 km'], ['Medan Merdeka', '11,5 km']
+    ['MT Haryono', '4,6 km', 'MTH Square, Jakarta', 'MTH Square'],
+    ['Kuningan', '6,1 km', 'Ciputra World Jakarta, Kuningan', 'Ciputra World (Lotte Avenue)'],
+    ['SCBD', '8,2 km', 'Pacific Place Mall, SCBD, Jakarta', 'Pacific Place'],
+    ['Setiabudi', '8,3 km', 'Setiabudi One, Jakarta', 'Setiabudi One'],
+    ['Sudirman', '8,7 km', 'Patung Jenderal Sudirman, Jakarta', 'Patung Jenderal Sudirman'],
+    ['Gatot Subroto', '8,8 km', 'Menara Jamsostek, Jakarta', 'Menara Jamsostek'],
+    ['Bundaran HI', '10,9 km', 'Bundaran HI, Jakarta', 'Bundaran HI'],
+    ['Medan Merdeka', '13,1 km', 'Monumen Nasional, Jakarta', 'Monas']
   ],
+
   t: {
     id: {
       'intro.line': 'Pulang ke tempat yang <em>resik</em> &amp; nyaman.',
@@ -125,8 +140,9 @@ window.KOS = {
       'show.eyebrow': 'Pilihan kamar', 'show.title': 'Pilih <em>kamarmu.</em>', 'show.balcony': 'Balkon', 'show.value': 'Paling hemat',
       'near.eyebrow': 'Sekitar Kos 18', 'near.title': 'Dekat ke <em>mana-mana.</em>',
       'near.walk': 'jalan kaki', 'near.ride': 'naik motor',
-      'near.office': 'Kawasan perkantoran', 'near.officeSub': '± 15–45 menit berkendara, tergantung lalu lintas',
-      'near.note': 'Jarak & waktu perkiraan dari Google Maps (lalu lintas lancar).',
+      'near.office': 'Kawasan perkantoran', 'near.officeSub': '± 15–50 menit berkendara, tergantung lalu lintas',
+      'near.note': 'Ketuk tempat untuk melihat tampak depan & rutenya dari kos. Jarak & waktu perkiraan (lalu lintas lancar).',
+      'place.sv': 'Tampak depan', 'place.example': 'Contoh gedung',  'place.map': 'Peta', 'place.route': 'Rute di Google Maps', 'place.open': 'Buka di Maps', 'place.tip': 'Geser foto untuk melihat sekeliling',
       'nav.about': 'Tentang', 'nav.rooms': 'Kamar', 'nav.facilities': 'Fasilitas', 'nav.gallery': 'Galeri', 'nav.location': 'Lokasi', 'nav.faq': 'FAQ', 'nav.cta': 'Tanya Kamar',
       'hero.eyebrow': 'Kos Putra · Pejaten Timur, Jakarta Selatan',
       'hero.title': 'Resik.<br>Nyaman.<br><em>Serasa Rumah.</em>',
@@ -148,7 +164,7 @@ window.KOS = {
       'room.descB': 'Kamar 3 × 3 m yang ringkas dan efisien dengan fasilitas lengkap — pilihan hemat tanpa mengorbankan kenyamanan.',
       'cmp.title': 'Bandingkan Tipe A & B',
       'fac.eyebrow': '03 — Fasilitas', 'fac.title': 'Semua yang kamu butuhkan, <em>sudah ada.</em>', 'fac.sub': 'Fasilitas bersama dan fasilitas dalam kamar yang dirawat rutin.',
-      'gal.eyebrow': '04 — Galeri', 'gal.title': 'Intip suasana <em>Kos 18.</em>', 'gal.hint': 'Scroll untuk menyusuri · ketuk foto untuk memperbesar',
+      'gal.eyebrow': '04 — Galeri', 'gal.title': 'Intip suasana <em>Kos 18.</em>', 'gal.hint': 'Geser untuk memutar · ketuk foto depan untuk memperbesar',
       'loc.eyebrow': '05 — Lokasi', 'loc.title': 'Tenang di perumahan, <em>dekat ke mana-mana.</em>',
       'loc.desc': 'Berada di jalan perumahan yang asri dan rindang di kawasan Pejaten Timur, Pasar Minggu — akses mudah ke transportasi umum, pusat belanja, kampus, dan perkantoran di Jakarta Selatan.',
       'loc.open': 'Buka Google Maps', 'loc.route': 'Petunjuk Arah',
@@ -170,8 +186,9 @@ window.KOS = {
       'show.eyebrow': 'Room options', 'show.title': 'Choose <em>your room.</em>', 'show.balcony': 'Balcony', 'show.value': 'Best value',
       'near.eyebrow': 'Around Kos 18', 'near.title': 'Close to <em>everything.</em>',
       'near.walk': 'walk', 'near.ride': 'by motorbike',
-      'near.office': 'Business districts', 'near.officeSub': '± 15–45 min drive, depending on traffic',
-      'near.note': 'Approximate distance & time from Google Maps (light traffic).',
+      'near.office': 'Business districts', 'near.officeSub': '± 15–50 min drive, depending on traffic',
+      'near.note': 'Tap a place to see its street view & route from the kos. Approximate distance & time (light traffic).',
+      'place.sv': 'Street view', 'place.example': 'Example building',  'place.map': 'Map', 'place.route': 'Route in Google Maps', 'place.open': 'Open in Maps', 'place.tip': 'Drag the photo to look around',
       'nav.about': 'About', 'nav.rooms': 'Rooms', 'nav.facilities': 'Facilities', 'nav.gallery': 'Gallery', 'nav.location': 'Location', 'nav.faq': 'FAQ', 'nav.cta': 'Ask a Room',
       'hero.eyebrow': 'Male-Only Boarding House · Pejaten Timur, South Jakarta',
       'hero.title': 'Clean.<br>Cozy.<br><em>Feels Like Home.</em>',
@@ -193,7 +210,7 @@ window.KOS = {
       'room.descB': 'A compact, efficient 3 × 3 m room with complete facilities — the value choice without compromising comfort.',
       'cmp.title': 'Compare Type A & B',
       'fac.eyebrow': '03 — Facilities', 'fac.title': 'Everything you need, <em>already here.</em>', 'fac.sub': 'Shared and in-room facilities, all regularly maintained.',
-      'gal.eyebrow': '04 — Gallery', 'gal.title': 'A peek inside <em>Kos 18.</em>', 'gal.hint': 'Scroll to walk through · tap a photo to enlarge',
+      'gal.eyebrow': '04 — Gallery', 'gal.title': 'A peek inside <em>Kos 18.</em>', 'gal.hint': 'Drag to spin · tap the front photo to enlarge',
       'loc.eyebrow': '05 — Location', 'loc.title': 'Quiet residential street, <em>close to everything.</em>',
       'loc.desc': 'Located on a leafy residential street in Pejaten Timur, Pasar Minggu — easy access to public transport, shopping, campuses and offices across South Jakarta.',
       'loc.open': 'Open Google Maps', 'loc.route': 'Get Directions',

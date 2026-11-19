@@ -210,34 +210,37 @@
     });
   }
 
+  const routeUrl = (ll, walk) => `https://www.google.com/maps/dir/?api=1&origin=${K.kosLL}&destination=${ll}&travelmode=${walk ? 'walking' : 'driving'}`;
   function renderNearby() {
     const g = $('#nearGrid'); if (!g || !K.nearby) return;
+    const unit = lang === 'en' ? 'min' : 'mnt';
     g.innerHTML = K.nearby.map(grp => `
       <div class="ncard">
         <div class="ncard__head"><span class="near__ic">${grp.ic}</span><b>${grp[lang]}</b></div>
-        <ul>${grp.items.map(it => `
-          <li>
+        <ul>${grp.items.map((it, j) => `
+          <li><a class="nitem" data-g="${K.nearby.indexOf(grp)}" data-j="${j}" href="${routeUrl(encodeURIComponent(it.q || it.ll), it.m === 'walk')}" target="_blank" rel="noopener" title="${lang === 'en' ? 'Open route in Google Maps' : 'Buka rute di Google Maps'}">
             <span class="nitem__e">${it.e}</span>
             <span class="nitem__txt"><b>${it.n}</b><small>${L(it.s)}</small></span>
-            <span class="nitem__d"><b>${it.d}</b><small>${it.t} ${lang === 'en' ? 'min' : 'mnt'} ${t(it.m === 'walk' ? 'near.walk' : 'near.ride')}</small></span>
-          </li>`).join('')}</ul>
+            <span class="nitem__d"><b>${it.d}</b><small>${it.t} ${unit} ${t(it.m === 'walk' ? 'near.walk' : 'near.ride')}</small></span>
+            <i class="nitem__go" aria-hidden="true">↗</i>
+          </a></li>`).join('')}</ul>
       </div>`).join('');
-    $('#nearOffices').innerHTML = K.offices.map(([n, d]) => `<span class="chip-o"><b>${n}</b>${d}</span>`).join('');
+    $('#nearOffices').innerHTML = K.offices.map(([n, d, q, ex], k) => `<a class="chip-o" data-o="${k}" href="${routeUrl(encodeURIComponent(q), false)}" target="_blank" rel="noopener"><b>${n}</b>${d}</a>`).join('');
   }
 
   const galList = () => K.gallery.map(g => ({ src: img(g.f), cap: g[lang] }));
   function renderGallery() {
-    const world = $('#tunnelWorld');
-    if (!world.children.length) {
-      world.innerHTML = K.gallery.map((g, i) => `
-        <figure class="tcard${g.f === 'env-6' ? ' tcard--wide' : ''}" data-i="${i}">
-          <img src="${img(g.f)}" alt="" loading="${i < 4 ? 'eager' : 'lazy'}" draggable="false">
-          <span class="tcard__n">${String(i + 1).padStart(2, '0')}</span>
-          <figcaption></figcaption>
-        </figure>`).join('');
-      $$('.tcard', world).forEach(c => c.addEventListener('click', () => openLightbox(galList(), +c.dataset.i)));
+    const stage = $('#ringStage');
+    if (!stage) return;
+    if (!$('.rcard', stage)) {
+      stage.insertAdjacentHTML('beforeend', K.gallery.map((g, i) => `
+        <figure class="rcard" data-i="${i}">
+          <img src="${img(g.f)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" draggable="false">
+          <span class="rcard__n">${String(i + 1).padStart(2, '0')}</span>
+        </figure>`).join(''));
     }
-    $$('.tcard', world).forEach((c, i) => { $('figcaption', c).textContent = K.gallery[i][lang]; $('img', c).alt = K.gallery[i][lang]; });
+    $$('.rcard', stage).forEach((c, i) => { $('img', c).alt = K.gallery[i][lang]; });
+    if (window.__ring) window.__ring.caption();
   }
 
   /* ---------------- Lightbox ---------------- */
@@ -362,6 +365,54 @@
     if (e.key === '+' || e.key === '=') zoomTo(zs * 1.6, undefined, undefined, true);
     if (e.key === '-') zoomTo(zs / 1.6, undefined, undefined, true);
     if (e.key === '0') zoomReset();
+  });
+
+
+  /* ---------------- Pratinjau tempat terdekat ---------------- */
+  const ps = $('#psheet'), psFrame = $('#psFrame');
+  let psCur = null, psView = 'sv';
+  // sv = 'lat,lng,arah' posisi kamera Street View yang sudah diverifikasi menghadap tampak depan
+  const svUrl = sv => { const [la, ln, h] = sv.split(','); return `https://www.google.com/maps?layer=c&cbll=${la},${ln}&cbp=12,${h},0,0,0&output=svembed`; };
+  const mapUrl = (q, ll) => `https://www.google.com/maps?q=${encodeURIComponent(q || ll)}${/^-?\d/.test(ll) ? `&ll=${ll}` : ''}&z=17&output=embed`;
+  function psLoad() {
+    if (!psCur) return;
+    psFrame.innerHTML = `<iframe title="${psCur.n}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen src="${psView === 'sv' ? svUrl(psCur.sv) : mapUrl(psCur.q, psCur.ll)}"></iframe>`;
+    $$('.psheet__tabs button').forEach(b => b.classList.toggle('is-on', b.dataset.v === psView));
+    $('.psheet__tip').style.visibility = psView === 'sv' ? 'visible' : 'hidden';
+  }
+  function openPlace(it) {
+    psCur = it; psView = it.sv ? 'sv' : 'map';
+    $('.psheet__tabs').style.display = it.sv ? '' : 'none';      // tanpa foto terverifikasi → peta saja
+    $('#psE').textContent = it.e || '🏢';
+    $('#psName').textContent = it.n;
+    $('#psSub').textContent = it.s ? L(it.s) : '';
+    $('#psDist').textContent = it.d;
+    $('#psTime').textContent = it.t ? `${it.t} ${lang === 'en' ? 'min' : 'mnt'} ${t(it.m === 'walk' ? 'near.walk' : 'near.ride')}` : t('near.officeSub');
+    $('#psRoute').href = routeUrl(encodeURIComponent(it.q || it.ll), it.m === 'walk');
+    $('#psOpen').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.q || it.ll)}`;
+    psLoad();
+    ps.classList.add('is-open'); ps.setAttribute('aria-hidden', 'false');
+    if (lenis) lenis.stop();
+  }
+  function closePlace() {
+    ps.classList.remove('is-open'); ps.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { if (!ps.classList.contains('is-open')) psFrame.innerHTML = ''; }, 350);   // hentikan Street View
+    if (lenis) lenis.start();
+  }
+  $$('.psheet__tabs button').forEach(b => b.addEventListener('click', () => { psView = b.dataset.v; psLoad(); }));
+  $('.psheet__x').addEventListener('click', closePlace);
+  ps.addEventListener('click', e => { if (e.target === ps) closePlace(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && ps.classList.contains('is-open')) closePlace(); });
+  // klik tempat / kawasan kantor → buka panel (link asli tetap jadi cadangan bila JS gagal)
+  document.addEventListener('click', e => {
+    const a = e.target.closest('.nitem, .chip-o');
+    if (!a) return;
+    e.preventDefault();
+    if (a.classList.contains('nitem')) openPlace(K.nearby[+a.dataset.g].items[+a.dataset.j]);
+    else {
+      const [n, d, q, ex] = K.offices[+a.dataset.o];
+      openPlace({ e: '🏢', n, d, q, ll: q, m: 'ride', s: { id: `${t('place.example')}: ${ex}`, en: `${t('place.example')}: ${ex}` } });
+    }
   });
 
   /* ---------------- Apply language ---------------- */
@@ -567,40 +618,88 @@
     });
   }
 
-  // 3) GALERI LORONG 3D: kamera berjalan menembus foto-foto
-  let tunnelLayout = [];
-  function tunnelScene() {
-    const world = $('#tunnelWorld'), bar = $('#galProgress'), head = $('.tunnel__head');
-    const layout = () => {
-      const mobile = window.innerWidth < 700;
-      const spread = mobile ? window.innerWidth * .2 : Math.min(window.innerWidth * .26, 420);
-      const gap = mobile ? 620 : 760;
-      tunnelLayout = $$('.tcard', world).map((c, i) => {
-        const side = i % 2 ? -1 : 1;   // foto pertama di kanan (judul galeri ada di kiri)
-        const jitter = ((i * 37) % 10) / 10;
-        return { c, x: side * spread * (.55 + jitter * .5), y: (((i * 53) % 10) / 10 - .5) * (mobile ? 120 : 180), z: -i * gap, rot: side * -6, w: c.offsetWidth, h: c.offsetHeight };
+
+  /* ---------------- Galeri cincin 360° (3D semu: tanpa preserve-3d → aman di iPhone) ---------------- */
+  function ringGallery() {
+    const stage = $('#ringStage'); if (!stage) return;
+    const cards = $$('.rcard', stage), n = cards.length, step = 360 / n, cap = $('#ringCap');
+    let rot = 0, vel = 0, target = null, dragging = false, hover = false, idleUntil = 0, visible = false, last = 0;
+    let R = 400, raf = 0;
+    const AUTO = reduce ? 0 : 7;               // derajat per detik (putar pelan ke kanan)
+    const size = () => { R = Math.min(stage.clientWidth * (window.innerWidth < 700 ? .36 : .4), 560); };
+    size(); window.addEventListener('resize', size);
+    const norm = a => ((a % 360) + 540) % 360 - 180;   // -180..180
+    const frontIndex = () => { let best = 0, bd = 999; cards.forEach((_, i) => { const d = Math.abs(norm(i * step + rot)); if (d < bd) { bd = d; best = i; } }); return best; };
+    let lastFront = -1;
+    const caption = () => { const f = frontIndex(); cap.textContent = `${String(f + 1).padStart(2, '0')} / ${n} · ${K.gallery[f][lang]}`; lastFront = f; };
+    function layout() {
+      cards.forEach((c, i) => {
+        const th = norm(i * step + rot), rad = th * Math.PI / 180;
+        const depth = Math.cos(rad), k = (depth + 1) / 2;              // 1 = depan, 0 = belakang
+        const x = Math.sin(rad) * R, s = .5 + .5 * k, y = (1 - k) * -26;
+        c.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${s}) perspective(900px) rotateY(${(-th * .55).toFixed(2)}deg)`;
+        c.style.zIndex = Math.round(k * 100);
+        c.style.opacity = (.18 + .82 * Math.pow(k, 1.4)).toFixed(3);
+        c.style.setProperty('--shade', (1 - k) * .6);
+        c.classList.toggle('is-front', Math.abs(th) < step / 2);
       });
-      return gap;
-    };
-    let gap = layout();
-    window.addEventListener('resize', () => { gap = layout(); });
-    scene('.tunnel', p => {
-      bar.style.width = (p * 100) + '%';
-      head.style.opacity = 1 - seg(p, .02, .1);
-      // kamera mulai di belakang foto pertama (semua foto masih jauh), berakhir tepat melewati foto terakhir
-      const cam = -380 + p * ((tunnelLayout.length - 1) * gap + 200);   // foto terakhir berhenti di depan, tidak terpotong
-      tunnelLayout.forEach(t => {
-        const z = t.z + cam;
-        const visible = z < 820 && z > -5200;
-        if (!visible) { t.c.style.visibility = 'hidden'; return; }
-        t.c.style.visibility = 'visible';
-        const fadeFar = clamp01((z + 5200) / 1600);
-        const fadeNear = 1 - clamp01((z + 60) / 200);    // foto yang melintas dekat kamera cepat memudar (tanpa bayangan besar)
-        t.c.style.opacity = Math.min(fadeFar, fadeNear);
-        t.c.style.pointerEvents = fadeNear > .5 && z > -2500 ? 'auto' : 'none';
-        t.c.style.transform = `translate3d(${t.x - t.w / 2}px, ${t.y - t.h / 2}px, ${z}px) rotateY(${t.rot}deg)`;
-      });
+      const f = frontIndex(); if (f !== lastFront) caption();
+    }
+    function tick(t) {
+      raf = 0;
+      const dt = Math.min(.05, (t - (last || t)) / 1000); last = t;
+      if (!dragging) {
+        if (target !== null) {
+          const d = target - rot; rot += d * Math.min(1, dt * 7);
+          if (Math.abs(d) < .05) { rot = target; target = null; vel = 0; }
+        } else if (Math.abs(vel) > .5) {                       // luncuran setelah digeser
+          rot += vel * dt; vel *= Math.pow(.05, dt);
+        } else if (!hover && performance.now() > idleUntil) {   // putar otomatis pelan
+          rot += AUTO * dt;
+        }
+      }
+      layout();
+      if (visible) raf = requestAnimationFrame(tick);
+    }
+    const start = () => { if (!raf && visible) { last = 0; raf = requestAnimationFrame(tick); } };
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) start(); }, { threshold: .05 }).observe(stage);
+    // geser manual (mouse & sentuh)
+    let px = 0, py = 0, moved = 0, lastX = 0, lastT = 0, axis = null;
+    stage.addEventListener('pointerdown', e => {
+      dragging = true; target = null; vel = 0; moved = 0; axis = null;
+      px = lastX = e.clientX; py = e.clientY; lastT = performance.now();
     });
+    window.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - px, dy = e.clientY - py;
+      if (!axis && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if (axis === 'y') { dragging = false; return; }        // gerak vertikal = scroll halaman
+      const now = performance.now(), ddx = e.clientX - lastX;
+      rot += ddx * (180 / (Math.PI * R)) * 1.1;               // ikuti jari
+      vel = ddx / Math.max(1, now - lastT) * 1000 * (180 / (Math.PI * R)) * 1.1;
+      lastX = e.clientX; lastT = now; moved += Math.abs(ddx);
+      layout();
+    }, { passive: true });
+    const end = () => { if (!dragging) return; dragging = false; idleUntil = performance.now() + 2500; start(); };
+    window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);
+    stage.addEventListener('mouseenter', () => { hover = true; });
+    stage.addEventListener('mouseleave', () => { hover = false; });
+    // ketuk: kartu depan → lightbox; kartu lain → putar ke depan
+    cards.forEach((c, i) => c.addEventListener('click', () => {
+      if (moved > 8) return;
+      const th = norm(i * step + rot);
+      if (Math.abs(th) < step / 2) openLightbox(galList(), i);
+      else { vel = 0; target = rot - th; idleUntil = performance.now() + 4000; start(); }
+    }));
+    $$('.ring__btn').forEach(b => b.addEventListener('click', () => {
+      vel = 0;                                               // hentikan sisa luncuran
+      const base = target !== null ? target : rot;
+      target = Math.round((base - (+b.dataset.dir) * step) / step) * step;
+      idleUntil = performance.now() + 4000; start();
+    }));
+    stage.addEventListener('keydown', e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') $(`.ring__btn[data-dir="${e.key === 'ArrowLeft' ? -1 : 1}"]`).click(); });
+    layout(); caption();
+    window.__ring = { caption };
   }
 
   function scrollAnims() {
@@ -611,7 +710,6 @@
     }
     introScene();
     statementScene();
-    tunnelScene();
     $$('.reveal').forEach(el => G.from(el, { y: 46, opacity: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } }));
     G.from('.ncard', { y: 50, opacity: 0, duration: 1, stagger: .12, ease: 'expo.out', scrollTrigger: { trigger: '#nearGrid', start: 'top 85%' } });
     G.from('.fac', { y: 60, opacity: 0, duration: .9, stagger: .07, ease: 'expo.out', scrollTrigger: { trigger: '#facGrid', start: 'top 82%' } });
@@ -682,6 +780,7 @@
   bindMagnetic();
   bindFacHover();
   scrollAnims();
+  ringGallery();
 
   const heroImg = $('.intro__card img');
   const t0 = performance.now();
