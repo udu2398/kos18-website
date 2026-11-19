@@ -476,7 +476,7 @@
     scenes.forEach(sc => {
       const r = sc.el.getBoundingClientRect();
       if (r.bottom < -vh || r.top > vh * 2) return;           // jauh dari layar: lewati
-      sc.fn(clamp01(-r.top / Math.max(1, sc.el.offsetHeight - vh)));
+      sc.fn(clamp01(-r.top / Math.max(1, sc.el.offsetHeight - sc.vh())));
     });
   }
   const queueScenes = () => { if (!sceneQueued) { sceneQueued = true; requestAnimationFrame(runScenes); } };
@@ -486,9 +486,12 @@
   function scene(sel, fn) {
     const el = $(sel);
     if (!el) return;
-    scenes.push({ el, fn });
+    // tinggi acuan = tinggi area sticky (100svh) → tetap walau address bar HP muncul/hilang
+    const sticky = el.querySelector('[class$="__sticky"]');
+    const vh = () => (sticky ? sticky.offsetHeight : window.innerHeight);
+    scenes.push({ el, fn, vh });
     const r = el.getBoundingClientRect();
-    fn(clamp01(-r.top / Math.max(1, el.offsetHeight - window.innerHeight)));
+    fn(clamp01(-r.top / Math.max(1, el.offsetHeight - vh())));
   }
 
   // 1) INTRO: foto layar penuh mengecil jadi kartu → KOS 18 raksasa di belakang → kolase foto
@@ -499,14 +502,19 @@
     const shade = $('.intro__shade'), open = $('.intro__open'), copy = $('.intro__copy'), bar = $('.intro__bar span');
     let m = {};
     const measure = () => {
-      const vw = window.innerWidth, vh = window.innerHeight;
+      const vw = st.clientWidth, vh = st.clientHeight;   // ukuran area sticky (stabil di HP)
       const cw = card.offsetWidth, ch = card.offsetHeight;
       const cy = parseFloat(getComputedStyle(st).getPropertyValue('--cy')) / 100 * vh;
       m = { vw, vh, cw, ch, mobile: vw < 700, S0: Math.max(vw / cw, vh / ch) * 1.12, dy: vh / 2 - cy,
             fs: parseFloat(getComputedStyle(solid[0]).fontSize) };
     };
     measure();
-    window.addEventListener('resize', () => { measure(); queueScenes(); });
+    let lastW = window.innerWidth;
+    window.addEventListener('resize', () => {
+      // di HP, resize karena address bar (lebar sama) diabaikan → kartu tidak melompat
+      if (window.innerWidth === lastW && !fine) return;
+      lastW = window.innerWidth; measure(); queueScenes();
+    });
     const lerp = (a, b, t) => a + (b - a) * t;
     const introEl = $('.intro');
     scene('.intro', p => {
