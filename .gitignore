@@ -1,0 +1,16 @@
+# tidak ikut dipublikasikan
+backup-v1/
+foto-tanpa-watermark/
+tools/
+
+# foto asli tanpa watermark: hanya yang dipakai halaman (dekorasi) yang ikut
+assets/img-asli/*
+!assets/img-asli/env-1.webp
+!assets/img-asli/env-5.webp
+!assets/img-asli/env-6.webp
+!assets/img-asli/env-14.webp
+!assets/img-asli/n2-1.webp
+
+Thumbs.db
+desktop.ini
+.DS_Store
