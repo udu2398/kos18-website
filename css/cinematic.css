@@ -237,3 +237,40 @@ body.in-intro .wa-float { transform: scale(0) !important; pointer-events: none; 
 .js-scard .scard.is-in:hover { transform: perspective(1000px) translateY(-8px) rotateX(2deg); transition-delay: 0s; }
 .showcase__row { min-width: 0; }
 .scard { width: 100%; max-width: 100%; }
+
+/* ---------- Tempat terdekat (lokasi) ---------- */
+.near { margin-top: clamp(56px, 7vw, 90px); }
+.near__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
+.near__head .eyebrow { margin: 0 0 8px; width: 100%; }
+.near__title { font-family: var(--ff-d); font-weight: 800; letter-spacing: -.035em; line-height: 1; font-size: clamp(30px, 3.6vw, 48px); margin: 0; }
+.near__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ncard { background: #fffaf1; border: 1px solid var(--line-l); border-radius: var(--radius); padding: 20px 20px 10px; }
+.ncard__head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.ncard__head b { font-family: var(--ff-d); font-size: 18px; letter-spacing: -.01em; }
+.near__ic { width: 38px; height: 38px; border-radius: 12px; background: var(--sand); display: grid; place-items: center; font-size: 19px; flex: none; }
+.ncard ul { list-style: none; margin: 0; padding: 0; }
+.ncard li { display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: center; padding: 12px 0; border-top: 1px dashed rgba(23, 32, 27, .14); }
+.ncard li:first-child { border-top: 0; }
+.nitem__e { font-size: 18px; text-align: center; }
+.nitem__txt { min-width: 0; display: flex; flex-direction: column; }
+.nitem__txt b { font-size: 14.5px; font-weight: 700; line-height: 1.3; }
+.nitem__txt small, .nitem__d small { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.nitem__d { text-align: right; display: flex; flex-direction: column; align-items: flex-end; white-space: nowrap; }
+.nitem__d b { font-family: var(--ff-d); font-size: 16px; color: var(--teak-600); }
+.near__office { margin-top: 16px; background: var(--pine-800); color: var(--cream); border-radius: var(--radius); padding: 20px; display: grid; grid-template-columns: auto 1fr; gap: 16px 24px; align-items: center; }
+.near__office .near__ic { background: rgba(246, 240, 228, .1); }
+.near__officeHead { display: flex; align-items: center; gap: 12px; }
+.near__officeHead b { display: block; font-family: var(--ff-d); font-size: 18px; }
+.near__officeHead small { color: rgba(246, 240, 228, .65); font-size: 12.5px; }
+.near__chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.chip-o { display: inline-flex; align-items: baseline; gap: 6px; padding: 8px 13px; border-radius: 999px; background: rgba(246, 240, 228, .07); border: 1px solid rgba(246, 240, 228, .14); font-size: 13px; color: rgba(246, 240, 228, .7); }
+.chip-o b { color: var(--cream); font-weight: 700; }
+.near__note { margin: 12px 0 0; font-size: 12px; color: var(--muted); }
+@media (max-width: 1080px) { .near__grid { grid-template-columns: 1fr 1fr; } .near__office { grid-template-columns: 1fr; } .near__chips { justify-content: flex-start; } }
+@media (max-width: 700px) {
+  .near__grid { grid-template-columns: 1fr; gap: 12px; }
+  .ncard { padding: 16px 16px 6px; }
+  .ncard li { padding: 11px 0; }
+  .near__office { padding: 18px 16px; }
+  .chip-o { font-size: 12.5px; padding: 7px 11px; }
+}

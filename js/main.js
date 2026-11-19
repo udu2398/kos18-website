@@ -210,6 +210,21 @@
     });
   }
 
+  function renderNearby() {
+    const g = $('#nearGrid'); if (!g || !K.nearby) return;
+    g.innerHTML = K.nearby.map(grp => `
+      <div class="ncard">
+        <div class="ncard__head"><span class="near__ic">${grp.ic}</span><b>${grp[lang]}</b></div>
+        <ul>${grp.items.map(it => `
+          <li>
+            <span class="nitem__e">${it.e}</span>
+            <span class="nitem__txt"><b>${it.n}</b><small>${L(it.s)}</small></span>
+            <span class="nitem__d"><b>${it.d}</b><small>${it.t} ${lang === 'en' ? 'min' : 'mnt'} ${t(it.m === 'walk' ? 'near.walk' : 'near.ride')}</small></span>
+          </li>`).join('')}</ul>
+      </div>`).join('');
+    $('#nearOffices').innerHTML = K.offices.map(([n, d]) => `<span class="chip-o"><b>${n}</b>${d}</span>`).join('');
+  }
+
   const galList = () => K.gallery.map(g => ({ src: img(g.f), cap: g[lang] }));
   function renderGallery() {
     const world = $('#tunnelWorld');
@@ -362,7 +377,7 @@
     $$('[data-wa="general"]').forEach(a => { a.href = waUrl(t('wa.general')); });
     $$('.lang button').forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
     if (slider) slider.destroy();
-    renderRoom(false); renderCompare(); renderFacilities(); renderFaq(); renderGallery();
+    renderRoom(false); renderCompare(); renderFacilities(); renderFaq(); renderGallery(); renderNearby();
     if (!first) {
       bindFacHover();
       if (G && !reduce) G.from(heroWords, { yPercent: 110, duration: .9, stagger: .05, ease: 'expo.out' });
@@ -590,6 +605,7 @@
     statementScene();
     tunnelScene();
     $$('.reveal').forEach(el => G.from(el, { y: 46, opacity: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } }));
+    G.from('.ncard', { y: 50, opacity: 0, duration: 1, stagger: .12, ease: 'expo.out', scrollTrigger: { trigger: '#nearGrid', start: 'top 85%' } });
     G.from('.fac', { y: 60, opacity: 0, duration: .9, stagger: .07, ease: 'expo.out', scrollTrigger: { trigger: '#facGrid', start: 'top 82%' } });
     $$('.count').forEach(c => {
       const o = { v: 0 };

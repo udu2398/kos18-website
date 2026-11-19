@@ -88,6 +88,33 @@ window.KOS = {
     { id: ['Sistem sewanya bagaimana?', 'Sewa dihitung bulanan. Untuk ketersediaan kamar dan ketentuan lainnya, tanyakan langsung via WhatsApp.'], en: ['How does the rental work?', 'Rent is paid monthly. Ask us on WhatsApp about availability and other terms.'] }
   ],
 
+
+  // Tempat terdekat — jarak & waktu dari Google Maps / OpenStreetMap (dicek 20 Nov 2026).
+  // mode: 'walk' = jalan kaki, 'ride' = naik motor/mobil (lalu lintas lancar)
+  nearby: [
+    { ic: '🚶', id: 'Jalan kaki', en: 'Walking distance', items: [
+      { e: '🕌', n: "Masjid Jami' Pejaten", s: { id: 'Masjid terdekat', en: 'Nearest mosque' }, d: '200 m', t: 3, m: 'walk' },
+      { e: '☕', n: 'Latar Kopi 3.0', s: { id: 'Tempat nongkrong · ★ 4,6', en: 'Hangout café · ★ 4.6' }, d: '600 m', t: 8, m: 'walk' },
+      { e: '🏪', n: 'Indomaret Kalibata Timur', s: { id: 'Minimarket', en: 'Convenience store' }, d: '700 m', t: 9, m: 'walk' },
+      { e: '⛪', n: 'GPIB Ekklesia', s: { id: 'Gereja terdekat · ★ 4,8', en: 'Nearest church · ★ 4.8' }, d: '850 m', t: 12, m: 'walk' }
+    ] },
+    { ic: '🛵', id: 'Belanja, kesehatan & kampus', en: 'Shopping, health & campus', items: [
+      { e: '🏥', n: 'Brawijaya Hospital Duren Tiga', s: { id: 'Rumah sakit · ★ 4,8', en: 'Hospital · ★ 4.8' }, d: '1,8 km', t: 5, m: 'ride' },
+      { e: '🛍️', n: 'Kalibata City Square', s: { id: 'Mall & supermarket (Farmers Market)', en: 'Mall & supermarket (Farmers Market)' }, d: '3 km', t: 10, m: 'ride' },
+      { e: '🎓', n: 'Universitas Trilogi', s: { id: 'Kampus', en: 'University' }, d: '2,5 km', t: 8, m: 'ride' },
+      { e: '🎓', n: 'Universitas Nasional (UNAS)', s: { id: 'Kampus', en: 'University' }, d: '4,3 km', t: 12, m: 'ride' }
+    ] },
+    { ic: '🚆', id: 'Transportasi umum', en: 'Public transport', items: [
+      { e: '🚆', n: 'KRL Pasar Minggu Baru', s: { id: 'Stasiun Commuter Line', en: 'Commuter Line station' }, d: '850 m', t: 12, m: 'walk' },
+      { e: '🚌', n: 'TransJakarta Komp. Kalibata', s: { id: 'Halte bus', en: 'Bus stop' }, d: '± 2 km', t: 6, m: 'ride' },
+      { e: '🚈', n: 'LRT Jabodebek Pancoran', s: { id: 'Stasiun LRT', en: 'LRT station' }, d: '3,3 km', t: 10, m: 'ride' },
+      { e: '🚇', n: 'MRT Blok M', s: { id: 'Stasiun MRT', en: 'MRT station' }, d: '8,4 km', t: 25, m: 'ride' }
+    ] }
+  ],
+  offices: [
+    ['Kuningan', '6,6 km'], ['MT Haryono', '7 km'], ['Gatot Subroto', '7,2 km'], ['Setiabudi', '7,4 km'],
+    ['SCBD', '8,2 km'], ['Sudirman', '9,4 km'], ['Bundaran HI', '10,9 km'], ['Medan Merdeka', '11,5 km']
+  ],
   t: {
     id: {
       'intro.line': 'Pulang ke tempat yang <em>resik</em> &amp; nyaman.',
@@ -96,6 +123,10 @@ window.KOS = {
       'stmt.word': 'RESIK',
       'stmt.text': 'Resik itu bukan cuma bersih. Resik itu lorong yang terawat, kamar yang wangi setelah dibersihkan, dan pulang ke tempat yang bikin kamu tenang.',
       'show.eyebrow': 'Pilihan kamar', 'show.title': 'Pilih <em>kamarmu.</em>', 'show.balcony': 'Balkon', 'show.value': 'Paling hemat',
+      'near.eyebrow': 'Sekitar Kos 18', 'near.title': 'Dekat ke <em>mana-mana.</em>',
+      'near.walk': 'jalan kaki', 'near.ride': 'naik motor',
+      'near.office': 'Kawasan perkantoran', 'near.officeSub': '± 15–45 menit berkendara, tergantung lalu lintas',
+      'near.note': 'Jarak & waktu perkiraan dari Google Maps (lalu lintas lancar).',
       'nav.about': 'Tentang', 'nav.rooms': 'Kamar', 'nav.facilities': 'Fasilitas', 'nav.gallery': 'Galeri', 'nav.location': 'Lokasi', 'nav.faq': 'FAQ', 'nav.cta': 'Tanya Kamar',
       'hero.eyebrow': 'Kos Putra · Pejaten Timur, Jakarta Selatan',
       'hero.title': 'Resik.<br>Nyaman.<br><em>Serasa Rumah.</em>',
@@ -137,6 +168,10 @@ window.KOS = {
       'stmt.word': 'RESIK',
       'stmt.text': '“Resik” is more than clean. It’s well-kept corridors, a room that smells fresh after cleaning, and coming home to a place that puts your mind at ease.',
       'show.eyebrow': 'Room options', 'show.title': 'Choose <em>your room.</em>', 'show.balcony': 'Balcony', 'show.value': 'Best value',
+      'near.eyebrow': 'Around Kos 18', 'near.title': 'Close to <em>everything.</em>',
+      'near.walk': 'walk', 'near.ride': 'by motorbike',
+      'near.office': 'Business districts', 'near.officeSub': '± 15–45 min drive, depending on traffic',
+      'near.note': 'Approximate distance & time from Google Maps (light traffic).',
       'nav.about': 'About', 'nav.rooms': 'Rooms', 'nav.facilities': 'Facilities', 'nav.gallery': 'Gallery', 'nav.location': 'Location', 'nav.faq': 'FAQ', 'nav.cta': 'Ask a Room',
       'hero.eyebrow': 'Male-Only Boarding House · Pejaten Timur, South Jakarta',
       'hero.title': 'Clean.<br>Cozy.<br><em>Feels Like Home.</em>',
