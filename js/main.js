@@ -190,7 +190,6 @@
   function renderFacilities() {
     $('#facGrid').innerHTML = K.facilities.map((f, i) => `
       <article class="fac reveal-fac">
-        <span class="fac__n">0${i + 1}</span>
         <div class="fac__ic">${icon(f.ic)}</div>
         <h3>${f[lang][0]}</h3><p>${f[lang][1]}</p>
       </article>`).join('');
@@ -236,7 +235,6 @@
       stage.insertAdjacentHTML('beforeend', K.gallery.map((g, i) => `
         <figure class="rcard" data-i="${i}">
           <img src="${img(g.f)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" draggable="false">
-          <span class="rcard__n">${String(i + 1).padStart(2, '0')}</span>
         </figure>`).join(''));
     }
     $$('.rcard', stage).forEach((c, i) => { $('img', c).alt = K.gallery[i][lang]; });
@@ -630,7 +628,7 @@
     const norm = a => ((a % 360) + 540) % 360 - 180;   // -180..180
     const frontIndex = () => { let best = 0, bd = 999; cards.forEach((_, i) => { const d = Math.abs(norm(i * step + rot)); if (d < bd) { bd = d; best = i; } }); return best; };
     let lastFront = -1;
-    const caption = () => { const f = frontIndex(); cap.textContent = `${String(f + 1).padStart(2, '0')} / ${n} · ${K.gallery[f][lang]}`; lastFront = f; };
+    const caption = () => { const f = frontIndex(); cap.textContent = K.gallery[f][lang]; lastFront = f; };
     function layout() {
       cards.forEach((c, i) => {
         const th = norm(i * step + rot), rad = th * Math.PI / 180;
