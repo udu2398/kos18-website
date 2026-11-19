@@ -378,7 +378,6 @@
     if (!psCur) return;
     psFrame.innerHTML = `<iframe title="${psCur.n}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen src="${psView === 'sv' ? svUrl(psCur.sv) : mapUrl(psCur.q, psCur.ll)}"></iframe>`;
     $$('.psheet__tabs button').forEach(b => b.classList.toggle('is-on', b.dataset.v === psView));
-    $('.psheet__tip').style.visibility = psView === 'sv' ? 'visible' : 'hidden';
   }
   function openPlace(it) {
     psCur = it; psView = it.sv ? 'sv' : 'map';

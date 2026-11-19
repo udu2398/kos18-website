@@ -94,8 +94,8 @@ window.KOS = {
   kosLL: '-6.2649226,106.845937',
   nearby: [
     { ic: '🚶', id: 'Jalan kaki', en: 'Walking distance', items: [
-      { e: '🕌', n: "Masjid Jami' Pejaten", s: { id: 'Masjid terdekat · ★ 4,7', en: 'Nearest mosque · ★ 4.7' }, d: '200 m', t: 3, m: 'walk', ll: '-6.2642298,106.8470085', q: "Masjid Jami' Pejaten, Pejaten Timur, Jakarta Selatan", sv: '-6.2643784,106.8470695,338' },
-      { e: '🏪', n: 'Indomaret Kalibata Timur', s: { id: 'Minimarket', en: 'Convenience store' }, d: '700 m', t: 9, m: 'walk', ll: '-6.2622097,106.8490855', q: 'Indomaret Kalibata Timur, Pancoran, Jakarta Selatan', sv: '-6.2623047,106.8490827,10' },
+      { e: '🕌', n: "Masjid Jami' Pejaten", s: { id: 'Masjid terdekat · ★ 4,7', en: 'Nearest mosque · ★ 4.7' }, d: '200 m', t: 3, m: 'walk', ll: '-6.2642298,106.8470085', q: "Masjid Jami' Pejaten, Pejaten Timur, Jakarta Selatan" },
+      { e: '🏪', n: 'Indomaret Kalibata Timur', s: { id: 'Minimarket', en: 'Convenience store' }, d: '700 m', t: 9, m: 'walk', ll: '-6.2622097,106.8490855', q: 'Indomaret Kalibata Timur, Pancoran, Jakarta Selatan' },
       { e: '⛪', n: 'Gereja GPIB Ekklesia', s: { id: 'Gereja terdekat · ★ 4,8', en: 'Nearest church · ★ 4.8' }, d: '850 m', t: 12, m: 'walk', ll: '-6.259356,106.847504', q: 'GPIB Ekklesia, Kalibata, Jakarta Selatan' }
     ] },
     { ic: '☕', id: 'Nongkrong & belanja', en: 'Hangouts & shopping', items: [
@@ -105,7 +105,7 @@ window.KOS = {
       { e: '🛍️', n: 'The Park Pejaten', s: { id: 'Mall (eks Pejaten Village) · ★ 4,5', en: 'Mall (formerly Pejaten Village) · ★ 4.5' }, d: '4,4 km', t: 10, m: 'ride', ll: '-6.2803337,106.8293019', q: 'The Park Pejaten, Jakarta' }
     ] },
     { ic: '🏥', id: 'Kesehatan & kampus', en: 'Health & campus', items: [
-      { e: '🏥', n: 'Brawijaya Hospital Duren Tiga', s: { id: 'Rumah sakit · ★ 4,8', en: 'Hospital · ★ 4.8' }, d: '1,8 km', t: 5, m: 'ride', ll: '-6.253289,106.841193', q: 'Brawijaya Hospital Duren Tiga, Jakarta', sv: '-6.2535629,106.8411473,355' },
+      { e: '🏥', n: 'Brawijaya Hospital Duren Tiga', s: { id: 'Rumah sakit · ★ 4,8', en: 'Hospital · ★ 4.8' }, d: '1,8 km', t: 5, m: 'ride', ll: '-6.253289,106.841193', q: 'Brawijaya Hospital Duren Tiga, Jakarta' },
       { e: '🏥', n: 'Siloam Hospitals ASRI', s: { id: 'Rumah sakit · ★ 4,4', en: 'Hospital · ★ 4.4' }, d: '2,8 km', t: 7, m: 'ride', ll: '-6.254562,106.832412', q: 'Siloam Hospitals ASRI, Jakarta' },
       { e: '🎓', n: 'Universitas Nasional (UNAS)', s: { id: 'Kampus · ★ 4,6', en: 'University · ★ 4.6' }, d: '5,2 km', t: 10, m: 'ride', ll: '-6.281287,106.839328', q: 'Universitas Nasional, Pejaten, Jakarta' },
       { e: '🎓', n: 'Universitas Mercu Buana', s: { id: 'Kampus Warung Buncit', en: 'Warung Buncit campus' }, d: '5 km', t: 12, m: 'ride', ll: '-6.2773703,106.8297603', q: 'Universitas Mercu Buana Warung Buncit, Jakarta' }
