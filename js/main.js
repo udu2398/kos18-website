@@ -9,6 +9,8 @@
   if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   window.scrollTo(0, 0);
   window.addEventListener('pageshow', e => { if (e.persisted) window.scrollTo(0, 0); });   // kembali via tombol back (bfcache)
+  // sebelum refresh/tutup: kembalikan ke atas → posisi yang diingat browser = 0
+  window.addEventListener('beforeunload', () => { window.scrollTo(0, 0); });
   const K = window.KOS;
   const G = window.gsap;
   const ST = window.ScrollTrigger;
@@ -21,6 +23,7 @@
 
   if (G && ST) {
     G.registerPlugin(ST);
+    ST.clearScrollMemory('manual');   // ScrollTrigger jangan mengembalikan posisi scroll lama
     // HP: address bar muncul/hilang saat scroll mengubah tinggi layar → jangan hitung ulang semua trigger
     ST.config({ ignoreMobileResize: true });
   }
@@ -794,6 +797,6 @@
   $('.loader__bar span').style.width = '60%';
   // hitung ulang posisi trigger setelah font & gambar selesai dimuat
   const refresh = () => { if (ST) ST.refresh(); queueScenes(); };
-  window.addEventListener('load', refresh);
+  window.addEventListener('load', () => { window.scrollTo(0, 0); if (lenis) lenis.scrollTo(0, { immediate: true }); refresh(); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
 })();
