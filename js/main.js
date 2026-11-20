@@ -3,6 +3,12 @@
    ========================================================= */
 (() => {
   'use strict';
+
+  /* refresh / buka ulang → selalu mulai dari halaman utama (atas), bukan posisi scroll terakhir */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  window.scrollTo(0, 0);
+  window.addEventListener('pageshow', e => { if (e.persisted) window.scrollTo(0, 0); });   // kembali via tombol back (bfcache)
   const K = window.KOS;
   const G = window.gsap;
   const ST = window.ScrollTrigger;
